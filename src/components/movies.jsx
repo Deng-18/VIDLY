@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Pagination from '../common/Pagination';
+import Pagination from './common/Pagination';
 import { getMovies } from '../services/fakeMovieService'
 import { paginate } from '../utils/paginate'
 import { getGenres } from '../services/fakeGenreService';
-import ListGroup from '../common/ListGroup'
+import ListGroup from './common/ListGroup'
 import MoviesTable from './moviesTable';
 import _ from 'lodash'
 
@@ -13,9 +13,8 @@ class Movies extends Component {
       allMovies: [],
       pageSize: 4,
       currentPage: 1,
-      genres: [], 
-      sortColumn: { path: 'title', order :'asc' },
-      name: 'title'
+      genres: [],
+      sortColumn: { path: 'title', order :'asc' }
     
     }
     
@@ -46,14 +45,12 @@ class Movies extends Component {
       this.setState({ selectedGenre: genre, currentPage: 1 })
     } 
   
-    handleSort = path => {
-      this.setState({ sortColumn: { path , order: 'asc'} })
+    handleSort = sortColumn => {
+      this.setState({ sortColumn })
     }
 
-
-    render() {
-      const {length: count} = this.state.allMovies;
-      const { allMovies, currentPage, pageSize, selectedGenre, genres, sortColumn } = this.state; 
+    getPagedData = () => {
+      const { allMovies, currentPage, pageSize, selectedGenre, sortColumn } = this.state; 
 
       const filtered = selectedGenre && selectedGenre._id
           ? allMovies.filter(e => e.genre._id === selectedGenre._id ) : allMovies;
@@ -62,13 +59,23 @@ class Movies extends Component {
 
       const movies = paginate(sorted, currentPage, pageSize)
 
+      return { totalCount: filtered.length, data: movies };
+    }
+
+    render() {
+      const { length: count } = this.state.allMovies;
+      const { pageSize, currentPage, sortColumn } = this.state;
+      
+      const { totalCount, data: movies } = this.getPagedData();
+
       if(count === 0) return <p>There are no movies in the data base</p>;
      
      return (
       <div className="row">
 
         <div className="col-3" >
-        <ListGroup genres={genres}
+        <ListGroup 
+        items={this.state.genres}
         onItemSelect={this.handleGenreSelect}
         selectedGenre={this.state.selectedGenre}
         />
@@ -76,15 +83,16 @@ class Movies extends Component {
 
 
         <div className="col">
-            <p>Showing { filtered.length } movies from the data base</p>
+            <p>Showing { totalCount } movies from the data base</p>
           <MoviesTable 
           movies={ movies } 
+          sortColumn={sortColumn}
           onDelete={ this.handleDelete } 
           onLike={ this.handleLike }
           onSort={this.handleSort}         
           />
           <Pagination 
-          itemsCount={filtered.length}
+          itemsCount={totalCount }         
           pageSize={pageSize} 
           handlePageChange={this.handlePageChange} 
           currentPage={currentPage}
