@@ -61,7 +61,7 @@ class Movies extends Component {
 
       return { totalCount: filtered.length, data: movies };
     }
-
+    
     render() {
       const { length: count } = this.state.allMovies;
       const { pageSize, currentPage, sortColumn } = this.state;
@@ -77,7 +77,7 @@ class Movies extends Component {
         <ListGroup 
         items={this.state.genres}
         onItemSelect={this.handleGenreSelect}
-        selectedGenre={this.state.selectedGenre}
+        selectedItem={this.state.selectedGenre}
         />
         </div>
 

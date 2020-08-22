@@ -18,7 +18,7 @@ class ListGroup extends Component {
             item === selectedItem ? "list-group-item active" : "list-group-item"
           }
         >
-          {item[textProperty]}
+            {item[textProperty]}
         </li>
       ))}
     </ul>

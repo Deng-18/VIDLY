@@ -35,7 +35,6 @@
   padding: 10px;
   top: 50%o;
   left: 35%;
-  text-align: center;
 }
 
 .avatar{
@@ -46,3 +45,27 @@
 	top:-50px;
 	left:calc(50% - 50px);
 }
+
+.menu {
+    width: 100%;
+    margin: 0 auto;
+    background: #f2f2f2;
+    height: 50px;
+}
+
+.main-menu {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  padding: 10px 20px;
+}
+
+.main-menu li {
+  display: inline;
+  font: 1em sans-serif;
+}
+
+a:active {
+  color: red;
+}
+
